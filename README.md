@@ -1,27 +1,86 @@
-# TodoAngular
+## Angular Installation and App creation
+In terminal run: 
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.1.4.
+```terminal
+npm install -g @angular/cli
+ng new my-app
+cd my-app
+code .
+ng serve --open
+```
 
-## Development server
+To create components/services:
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+```terminal
+ng g c <component-name>
+ng g s <service-name>
+```
 
-## Code scaffolding
+You could also create a component inside a new folder like this:
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```terminal
+ng g c <folder-name>/<component-name>
+```
 
-## Build
+For example, the following line will create a component products inside the folder components:
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+```terminal
+ng g c components/products
+```
 
-## Running unit tests
+## Angular-Firebase Integration
+In terminal run:
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```
+npm install firebase angularfire2
+```
 
-## Running end-to-end tests
+To connect to firebase, you'll need to go to https://console.firebase.google.com/?pli=1 and log in with your google account.
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Let's add a database on firebase. Click on add project and write your project name on it. Once created, click on continue. Then click on the </> Logo. This will give you a config variable. Then go to your enviroment.ts and add your config json object. Like this:
 
-## Further help
+```javascript
+export const environment = {
+    production: false,
+    firebase: {
+        apiKey: "XXXXXXXXXXXXXXXXXX",
+        authDomain: "projectId.firebaseapp.com",
+        databaseURL: "https://projectId.firebaseio.com",
+        projectId: "projectId",
+        storageBucket: "projectId.appspot.com",
+        messagingSenderId: "123456789"
+    }
+};
+```
+Then in firebase website, click on database and for purposes of this tutotial, we will enable a Realtime Database. So just click enable. To allow CRUDing on the top of the navbar click on Rules and change read and write values to true.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+```javascript
+{
+    "rules": {
+        ".read": true,
+        ".write": true
+    }
+}
+```
+
+Then click on Publish. Now let's configure our project. Go to app/app.module.ts and write the following:
+
+```javascript
+// import firebase at the top of the file
+import { AngularFireModule} from 'angularfire2'
+import { AngularFireDatabaseModule} from 'angularfire2/database'
+import { environment } from '../environments/environment'
+```
+
+In imports add those modules, it should look like this:
+
+```javascript
+imports: [
+    BrowserModule,
+    AppRoutingModule,
+    AngularFireDatabaseModule,
+    AngularFireModule.initializeApp(environment.firebase),
+],
+```
+
+Congratulations! now you application is connected to firebase. Some of you might of might not have AppRoutingModule, that depends on how you set up you angular application at the beginning. Just don't worry about it for now.
