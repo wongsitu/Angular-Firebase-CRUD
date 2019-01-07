@@ -9,12 +9,15 @@ code .
 ng serve --open
 ```
 
-To create components/services:
+To create components/services/classes:
 
 ```terminal
 ng g c <component-name>
 ng g s <service-name>
+ng g cl <class-name>
 ```
+
+In Angular, services are methods that are available to all components. These could be simple functions to api requests. On the other hand, classes are normally used as models ( like Schemmas in NodeJS)
 
 You could also create a component inside a new folder like this:
 
@@ -27,6 +30,8 @@ For example, the following line will create a component products inside the fold
 ```terminal
 ng g c components/products
 ```
+
+this is applicable for services and classes as well.
 
 ## Angular-Firebase Integration
 In terminal run:

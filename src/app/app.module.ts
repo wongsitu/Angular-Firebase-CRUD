@@ -7,11 +7,22 @@ import { AppComponent } from './app.component';
 // firebase
 import { AngularFireModule} from 'angularfire2'
 import { AngularFireDatabaseModule} from 'angularfire2/database'
-import { environment } from '../environments/environment'
+import { environment } from '../environments/environment';
+
+// components
+import { ProductsComponent } from './components/products/products.component';
+import { ProductListComponent } from './components/products/product-list/product-list.component';
+import { ProductComponent } from './components/products/product/product.component'
+
+// services
+import { ProductService } from './services/product.service'
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ProductsComponent,
+    ProductListComponent,
+    ProductComponent
   ],
   imports: [
     BrowserModule,
@@ -19,7 +30,9 @@ import { environment } from '../environments/environment'
     AngularFireDatabaseModule,
     AngularFireModule.initializeApp(environment.firebase),
   ],
-  providers: [],
+  providers: [
+    ProductService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
