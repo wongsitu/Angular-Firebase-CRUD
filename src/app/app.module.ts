@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
+import { FormsModule} from '@angular/forms'
 // firebase
 import { AngularFireModule} from 'angularfire2'
 import { AngularFireDatabaseModule} from 'angularfire2/database'
@@ -28,6 +28,7 @@ import { ProductService } from './services/product.service'
     BrowserModule,
     AppRoutingModule,
     AngularFireDatabaseModule,
+    FormsModule,
     AngularFireModule.initializeApp(environment.firebase),
   ],
   providers: [

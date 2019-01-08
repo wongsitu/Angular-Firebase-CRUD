@@ -1,4 +1,4 @@
-## Angular Installation and App creation
+## Angular Installation and App Creation
 In terminal run: 
 
 ```terminal
@@ -8,6 +8,8 @@ cd my-app
 code .
 ng serve --open
 ```
+
+## Angular Component/Service/Class creation
 
 To create components/services/classes:
 
@@ -19,7 +21,7 @@ ng g cl <class-name>
 
 In Angular, services are methods that are available to all components. These could be simple functions to api requests. On the other hand, classes are normally used as models ( like Schemmas in NodeJS)
 
-You could also create a component inside a new folder like this:
+You could also create a component/service/class inside a new folder like this:
 
 ```terminal
 ng g c <folder-name>/<component-name>
@@ -31,7 +33,19 @@ For example, the following line will create a component products inside the fold
 ng g c components/products
 ```
 
-this is applicable for services and classes as well.
+To let Angular services to be used by other components, assuming that you've created a service inside a services folder, go to app.module.ts and import the following:
+
+```javascript
+import { NameService } from './services/name.service'
+```
+
+In the same file, inside providers array, add the name of the imported service:
+
+```javascript
+providers: [
+    NameService,
+]
+```
 
 ## Angular-Firebase Integration
 In terminal run:
