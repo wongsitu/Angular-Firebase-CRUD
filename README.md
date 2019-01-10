@@ -154,6 +154,42 @@ Binds in both directions from component to html and html to component. The synta
 ```
 
 ## Directives
+They are instructions for the DOM. For example:
+
+```html 
+<p appTurnGreen>Recieves a Green Background!</p>
+```
+
+```typescript
+@Directive({
+    selector:'[appTurnGreen]'
+})
+
+export class TurnGreenDirective{
+    ...
+}
+```
+
+## ngIf Directive
+Like in Python/Django we can do some template logic, except that the if statement goes inside a html tag:
+
+```html
+<!-- If statement equivalent -->
+<p *nfIf="contidional">
+
+</p>
+```
+If/else equivalent:
+
+```html
+<!-- If/else statement -->
+<p *nfIf="contidional; else elseBlock">
+    <!-- code goes here -->
+</p>
+<ng-template #elseBlock>
+    <!-- code goes here -->
+</ng-template>
+```
 
 ## Angular-Firebase Integration
 In terminal run:
