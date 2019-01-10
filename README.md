@@ -47,6 +47,114 @@ providers: [
 ]
 ```
 
+## Data binding 
+
+1. String Interpolation (Curly Braces)
+Similar to Python templating, Angular uses {{ some.variable.json.returned.from.backend}}. For example:
+
+```html
+<h1>Hello my name is {{ json.data.name }}</h1>
+```
+
+You can also call a method:
+
+```html
+<h1>Hello my name is {{ getServerStatus() }}</h1>
+```
+
+2. Property Binding (Square brakets)
+Say we got a disable button, and we want to enable it after 2 seconds. Say we have a server.component.ts and inside it we have:
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+    selector: 'app-server',
+    templateUrl: './server.component.html',
+    styleUrls: ['./server.component.scss']
+})
+export class ServersComponent implements OnInit{
+    allowNewServer = false
+
+    constructor(){
+        setTimeOut(()=>{
+            this.allowNewServer = true;
+        }, 2000);
+    }
+
+    ngOnInit(){
+
+    }
+}
+```
+To allow it to be clickable after 2 secs, in our server.component.html:
+
+```html
+<button class="btn btn-primary" [disable]="!allowNewServer">Allow to be clickable</button>
+<!-- You can also change text of tag-->
+<p [innertext]="allowNewServer"></p>
+<!-- Syntax is [attribute_of_tag]=>"method()/variable" -->
+```
+
+3. Event Binding (Parenthesis)
+Works as an event listener. say we add a onCreate() method to out server component:
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+    selector: 'app-server',
+    templateUrl: './server.component.html',
+    styleUrls: ['./server.component.scss']
+})
+export class ServersComponent implements OnInit{
+    allowNewServer = false;
+    serverCreationStatus = "No server was created";
+
+    constructor(){
+        setTimeOut(()=>{
+            this.allowNewServer = true;
+        }, 2000);
+    }
+
+    ngOnInit(){
+
+    }
+
+    onCreate(){
+        return this.serverCreationStatus = "server was created";
+    }
+}
+```
+
+In out html component then:
+
+```html
+<button class="btn btn-primary" [disable]="!allowNewServer" (click)="onCreate()">Allow to be clickable</button>
+<!-- Syntax is: (event)=>"methodToRun()" -->
+```
+Other events can be (click), (keyup), (keyup.enter), (blur), etc
+
+Important: 
+```html
+<input type="text" class="form-control" (input)="onUpdate($event)">
+```
+Like React, $event represents the letters we press in the keyboard. This is a reserved word that gives us access to reserved data. In this example, event is type Event and to access it in out component.ts, we can use dot notation: (<HTMLInputElement>event.target).value
+
+4. Two way Binding (Square Braket and Parenthesis)
+To use this, first we need to import the module in our compoment.ts:
+
+```typescript
+import { FormsModule } from '@angular/forms'
+```
+Binds in both directions from component to html and html to component. The syntax is:
+
+```html
+<button class="btn btn-primary" [(ngModel)]="serverName">Allow to be clickable</button>
+```
+
+## Directives
+
 ## Angular-Firebase Integration
 In terminal run:
 
