@@ -304,6 +304,17 @@ Using the previous loop, we can get the index of the current server doing:
 
 Here, index is a reserved word, not a taco. 
 
+### ngSwitch
+
+```html
+<div [ngSwitch]="switch_expression">
+    <div *ngSwitchCase="match_expression_1"></div>
+    <div *ngSwitchCase="match_expression_2"></div>
+    <div *ngSwitchCase="match_expression_3"></div>
+    <div *ngSwitchDefault></div>
+</div>
+```
+
 ## Basics of typescript
 
 
