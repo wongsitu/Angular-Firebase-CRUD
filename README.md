@@ -47,6 +47,22 @@ providers: [
 ]
 ```
 
+## Implementing Bootstrap
+First npm install bootstrap with the line below, this will install bootstrap in our node_modules:
+
+```terminal
+npm install --save bootstrap
+```
+
+then go to angular.json file and add "../node_modules/bootstrap/dist/css/bootstrap/dist/css/bootstrap.min.css" inside styles. It should look like this:
+
+```json
+"styles":[
+    "../node_modules/bootstrap/dist/css/bootstrap/dist/css/bootstrap.min.css",
+    "styles.css"
+]
+```
+
 ## Data binding 
 
 1. String Interpolation (Curly Braces)
@@ -170,7 +186,7 @@ export class TurnGreenDirective{
 }
 ```
 
-## ngIf Directive
+### ngIf Directive
 Like in Python/Django we can do some template logic, except that the if statement goes inside a html tag:
 
 ```html
@@ -190,6 +206,106 @@ If/else equivalent:
     <!-- code goes here -->
 </ng-template>
 ```
+
+### ngStyle Directive
+Say we want to change the color of a button depeding on server status, to do that we use ngStyle:
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+    selector: 'app-server',
+    templateUrl: './server.component.html',
+    styleUrls: ['./server.component.scss']
+})
+export class ServersComponent implements OnInit{
+    serverId: number = 10
+    serverStatus: string = 'offline'
+
+    constructor(){
+        this.serverStatus = Math.random() > 0.5 ? 'online' : 'offline';
+    }
+
+    getServerStatus(){
+        return this.serverStatus;
+    }
+
+    getColor(){
+        return this.serverStatus === "online" ? "green" : "red"
+    }
+}
+```
+
+```html
+<p [ngStyle]="{backgroundColor: getColor()}">This is button</p>
+```
+
+ngStyle allows us to update the style of a html tag dynamically.
+
+### ngClass
+The same way, we can add or remove classes dynamically. Using the same script previously, lets add a class .online in our server.component.css
+
+```CSS
+.active{
+    color: white;
+}
+```
+
+```html
+<p [ngClass]="{'active': serverStatus === 'online'}" ][ngStyle]="{backgroundColor: getColor()}">This is button</p>
+```
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+    selector: 'app-server',
+    templateUrl: './server.component.html',
+    styleUrls: ['./server.component.scss']
+})
+export class ServersComponent implements OnInit{
+    serverId: number = 10
+    serverStatus: string = 'offline'
+
+    constructor(){
+        this.serverStatus = Math.random() > 0.5 ? 'online' : 'offline';
+    }
+
+    getServerStatus(){
+        return this.serverStatus;
+    }
+
+    getColor(){
+        return this.serverStatus === "online" ? "green" : "red"
+    }
+}
+```
+
+ngClass updates a class only if a condition is met.
+
+### ngFor
+For loop in Angular templating. Syntax:
+
+```html
+<div class="parent" *ngFor="let server of servers">
+```
+
+You can also add the component itself. Say we are working on app-server component, you can do:
+
+```html
+<app-server *ngFor="let server of servers"></app-server>
+```
+
+### Getting index when using ngFor
+Using the previous loop, we can get the index of the current server doing:
+
+<div class="parent" *ngFor="let server of servers; let i = index">
+```
+
+Here, index is a reserved word, not a taco. 
+
+## Basics of typescript
+
 
 ## Angular-Firebase Integration
 In terminal run:
