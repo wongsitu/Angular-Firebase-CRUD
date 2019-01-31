@@ -299,6 +299,7 @@ You can also add the component itself. Say we are working on app-server componen
 ### Getting index when using ngFor
 Using the previous loop, we can get the index of the current server doing:
 
+```html
 <div class="parent" *ngFor="let server of servers; let i = index">
 ```
 
@@ -315,8 +316,154 @@ Here, index is a reserved word, not a taco.
 </div>
 ```
 
-## Basics of typescript
+### API calls
+Normally written in services, the syntax is the following:
 
+```typescript
+import { HttpClient, HttpResponse } from '@angular/core';
+import { Observable } from 'rxjs';
+
+export class NameService {
+    constructor(private http: HttpClient) {}
+
+    public getUsers(): Observable<any> {
+        return this.http.get('some_API_url')
+    }
+}
+```
+
+### Passing information down components
+Just like react uses state and props, Angular uses @Input() method. For example, say we have a server-component inside server-list-component. If we want to pass data from server-component to server-list-component, we could do the following, inside server-component it would look like:
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+    selector: 'app-server',
+    templateUrl: './server.component.html',
+    styleUrls: ['./server.component.scss']
+})
+export class ServersComponent implements OnInit{
+    @Input() element: {type: string, name: string, content: string}
+
+    constructor(){ }
+
+    ngOnInit(){
+
+    }
+}
+```
+
+@Input() is "exposing" our element variable, which in this case is an object, and this allows our parent element to use it. In our server-list component, we can call element in our html using property binding.
+
+```html
+<h1>This is server-list component</h1>
+<div>
+    {{ element | json }}
+</div>
+```
+
+You could also use:
+
+```typescript
+    @Input('taco') element: {type: string, name: string, content: string}
+```
+
+Now instead you can refer to the same variable using the name taco in your property binding.
+
+###Pasing inbformation from child to parents
+Say we have a parent app.component and a cockpit.component, which cockpit is the children of app. If we want to pass info from cockpit to app:
+
+In app.component.ts we have:
+
+```typescript
+import { Component } from '@angular/core';
+
+@Component({
+    selector: 'app-root',
+    templateUrl: './app.component.html',
+    styleUrls: ['./app.component.scss']
+})
+export class AppComponent implements OnInit{
+    serverElements = [{type: 'server', name: 'TestServer', content: 'Just a test'}]:
+
+    onServerAdded(serverData: {serverName: string, serverContent: string}){
+        this.serverElements.push({
+            type: 'server',
+            name: serverData.serverName,
+            content: serverData.serverContent
+        });
+    }
+
+    onBlueprintAdded(blueprintData: {serverName: string, serverContent: string}){
+        this.serverElements.push({
+            type: 'blueprint',
+            name: this.blueprintData.serverName,
+            content: this.blueprintData.serverContent
+        });
+    }
+
+}
+```
+
+In app.component.html:
+
+```html
+<div>
+    <app-cockpit
+        (servercreated)="onServerAdded($event)"
+        (bluePrintCreated)="onBlueprintAdded($event)"
+    ></app-cockpit>
+    <hr>
+    <div class="row">
+        <div class="col-xs-12">
+            <app-server-element *ngFor="let serverElement of serverElements"
+            [srvElement]="serverElement"><app-server-element>
+        </div>
+    </div>
+</div>
+```
+
+In cockpit.component.ts:
+
+```typescript
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+
+@Component({
+    selector: 'app-cockpit',
+    templateUrl: './cockpit.component.html',
+    styleUrls: ['./cockpit.component.scss']
+})
+export class CockpitComponent implements OnInit{
+    @Output() serverCreated = new EventEmiter<(serverName: string, serverContent: string)>();
+    @Output() blueprintCreated = new EventEmiter<(serverName: string, serverContent: string)>();
+    newServerName = '';
+    newServerContent = '';
+
+    constructor(){
+
+    }
+
+    ngOnInit(){
+
+    }
+
+    onAddServer(){
+        this.serverCreated.emit({
+            serverName: this.newServerName;
+            serverContent: this.newServerContent;
+        });
+    }
+
+    onAddBluepint(){
+        this.blueprintCreated.emit({
+            serverName: this.newServerName;
+            serverContent: this.newServerContent;
+        });
+    }
+
+}
+```
 
 ## Angular-Firebase Integration
 In terminal run:
