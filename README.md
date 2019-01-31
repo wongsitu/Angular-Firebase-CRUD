@@ -371,7 +371,7 @@ You could also use:
 
 Now instead you can refer to the same variable using the name taco in your property binding.
 
-###Pasing inbformation from child to parents
+### Pasing inbformation from child to parents
 Say we have a parent app.component and a cockpit.component, which cockpit is the children of app. If we want to pass info from cockpit to app:
 
 In app.component.ts we have:
